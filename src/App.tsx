@@ -41,10 +41,10 @@ function App() {
 
     const onHandleAdd = async (todo: TypeUser) => {
         try {
-            await userAPI.add(todo)
+            const {data} =  await userAPI.add(todo)
             setUserList([
                 ...userList,
-                todo
+                data
             ])
         } catch (error) {
             console.log(error)
@@ -52,16 +52,19 @@ function App() {
     }
     const onHandleDelete = async (id: string) => {
         try {
-            await userAPI.remote(id);
-            const newUser = userList.filter(todo => todo.id !== id);
-            setUserList(newUser);
+            const newTodo = window.confirm('Bạn có cần xóa không');
+            if(newTodo) {
+                await userAPI.remote(id);
+                const newUser = userList.filter(todo => todo.id !== id);
+                setUserList(newUser);
+            }
+
         } catch (error) {
             console.log(error)
         }
     }
-    const handleEditProduct = (itemProduct: TypeUser) => {
-        // console.log(itemProduct);
-        setCurrentProduct(itemProduct);
+    const handleEditProduct = (todo: TypeUser) => {
+        setCurrentProduct(todo);
         setIsModalVisible(true);
       } 
       const handleUpdateProduct = async (itemProduct: TypeUser) => {
